@@ -48,7 +48,7 @@ jobs:
           Compress-Archive -Path "TickTick_Patched.exe" -DestinationPath "TickTick_Patched.zip"
 
       - name: Create Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v2.2.1
         with:
           name: Patched TickTick (${{ github.run_number }})
           files: TickTick_Patched.zip
