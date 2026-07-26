@@ -1,6 +1,8 @@
 name: Build and Release Patched TickTick
+
 env:
   ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
+
 on:
   workflow_dispatch:
     inputs:
@@ -22,10 +24,10 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v4.3.0
         with:
           dotnet-version: '8.0.x'
 
@@ -36,7 +38,6 @@ jobs:
           Invoke-WebRequest -Uri "${{ inputs.app_url }}" -OutFile "TickTick.exe"
 
       - name: Run Patcher
-        # We can just build and run directly via dotnet run
         run: dotnet run -- "TickTick.exe"
 
       - name: Prepare Release Package
