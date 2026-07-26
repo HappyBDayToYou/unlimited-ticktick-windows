@@ -36,9 +36,29 @@ jobs:
         run: |
           Write-Host "Downloading target file from ${{ inputs.app_url }}..."
           Invoke-WebRequest -Uri "${{ inputs.app_url }}" -OutFile "TickTick.exe"
+          
+      - name: Verify Download
+        shell: pwsh
+        run: |
+          if (Test-Path "TickTick.exe") {
+            Write-Host "✅ File downloaded successfully!"
+            Write-Host "File size: $((Get-Item "TickTick.exe").Length) bytes"
+          } else {
+            Write-Error "❌ TickTick.exe was not downloaded!"
+            exit 1
+          }
 
       - name: Run Patcher
-        run: dotnet run -- "TickTick.exe"
+        shell: pwsh
+        run: |
+          Write-Host "Running patcher..."
+          dotnet run -- "TickTick.exe"
+          if (Test-Path "TickTick_Patched.exe") {
+            Write-Host "✅ Patcher succeeded! Patched file created."
+          } else {
+            Write-Error "❌ Patcher failed: TickTick_Patched.exe not generated."
+            exit 1
+          }
 
       - name: Prepare Release Package
         shell: pwsh
